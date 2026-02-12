@@ -25,14 +25,22 @@ function handleMenuUpdate(key: string) {
 
 <template>
   <NLayout has-sider style="height: 100vh">
-    <NLayoutSider bordered :width="200" content-style="padding: 12px;">
-      <div style="font-size: 18px; font-weight: 600; padding: 12px 0 16px; text-align: center">
-        Swiss Kit
-      </div>
+    <NLayoutSider bordered :width="220" content-style="padding: 16px;">
+      <div class="sidebar-brand">Swiss Kit</div>
       <NMenu :options="menuOptions" :value="activeKey" @update:value="handleMenuUpdate" />
     </NLayoutSider>
-    <NLayoutContent content-style="padding: 24px;">
+    <NLayoutContent content-style="padding: 32px; background: var(--color-bg);">
       <RouterView />
     </NLayoutContent>
   </NLayout>
 </template>
+
+<style scoped>
+.sidebar-brand {
+  font-family: var(--font-display);
+  font-size: 22px;
+  padding: 12px 0 20px;
+  text-align: center;
+  color: var(--color-text);
+}
+</style>
