@@ -1,0 +1,41 @@
+/* src/app/assets/styles/variables.css */
+:root {
+  /* 色彩 */
+  --color-bg: #faf9f7;
+  --color-bg-card: #ffffff;
+  --color-bg-card-hover: #f5f3f0;
+  --color-border: #e8e5e1;
+  --color-text: #2c2c2c;
+  --color-text-secondary: #6b6b6b;
+  --color-accent: #1a7a6d;
+  --color-accent-hover: #15665b;
+  --color-accent-light: rgba(26, 122, 109, 0.08);
+  --color-error: #d44;
+  --color-success: #2a9d4e;
+
+  /* 字体 */
+  --font-display: 'DM Serif Display', serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* 间距 */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+
+  /* 圆角 */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
+  /* 阴影 */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
+
+  /* 过渡 */
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
+}
