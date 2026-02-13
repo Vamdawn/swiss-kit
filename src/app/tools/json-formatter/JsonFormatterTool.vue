@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { NInput, NSpace, NButton, NAlert } from 'naive-ui'
+import { NInput, NSpace, NButton, NAlert, NInputNumber } from 'naive-ui'
 import CopyButton from '@/components/CopyButton.vue'
+import ToolPageHeader from '@/components/ToolPageHeader.vue'
+import { jsonFormatterTool } from './index'
 import { formatJson, minifyJson, validateJson } from './utils'
 
 const input = ref('')
@@ -39,53 +41,112 @@ function doMinify() {
 
 <template>
   <div>
-    <h2 style="font-family: var(--font-display); margin-bottom: var(--space-lg)">
-      JSON 格式化 / 校验
-    </h2>
+    <ToolPageHeader
+      :title="jsonFormatterTool.title"
+      :description="jsonFormatterTool.description"
+      :icon="jsonFormatterTool.icon"
+      :gradient-var="jsonFormatterTool.gradientVar"
+    />
 
-    <NSpace vertical :size="16">
-      <NSpace>
+    <div class="tool-controls">
+      <NSpace align="center">
         <NButton :disabled="!!validation" @click="doFormat">美化</NButton>
         <NButton :disabled="!!validation" @click="doMinify">压缩</NButton>
-        <NSpace align="center">
-          <span>缩进：</span>
-          <NInput
-            :value="String(indent)"
-            style="width: 60px"
-            size="small"
-            @update:value="(v: string) => (indent = Math.max(1, Math.min(8, Number(v) || 2)))"
-          />
+        <NSpace align="center" :size="8">
+          <span class="control-label">缩进：</span>
+          <NInputNumber v-model:value="indent" :min="1" :max="8" size="small" style="width: 80px" />
         </NSpace>
       </NSpace>
+    </div>
 
-      <NInput
-        v-model:value="input"
-        type="textarea"
-        placeholder="在此粘贴 JSON..."
-        :rows="12"
-        style="font-family: var(--font-mono)"
-      />
+    <NAlert v-if="validation" type="error" :bordered="false" style="margin-bottom: 16px">
+      {{ validation }}
+    </NAlert>
+    <NAlert v-else-if="input" type="success" :bordered="false" style="margin-bottom: 16px">
+      JSON 格式正确
+    </NAlert>
 
-      <NAlert v-if="validation" type="error" :bordered="false">
-        {{ validation }}
-      </NAlert>
-
-      <div v-if="!validation && input" style="position: relative">
-        <NAlert type="success" :bordered="false">JSON 格式正确</NAlert>
-      </div>
-
-      <div v-if="formatted" style="position: relative">
+    <div class="split-panel">
+      <div class="panel-input">
+        <div class="panel-label">输入</div>
         <NInput
-          :value="formatted"
+          v-model:value="input"
           type="textarea"
-          readonly
-          :rows="12"
-          style="font-family: var(--font-mono)"
+          placeholder="在此粘贴 JSON..."
+          :rows="16"
+          class="mono-input"
         />
-        <div style="position: absolute; top: 8px; right: 8px">
-          <CopyButton :text="formatted" />
+      </div>
+      <div class="panel-divider" />
+      <div class="panel-output">
+        <div class="panel-label">输出</div>
+        <div class="output-wrapper">
+          <NInput
+            :value="formatted"
+            type="textarea"
+            readonly
+            placeholder="格式化结果将显示在这里"
+            :rows="16"
+            class="mono-input"
+          />
+          <div v-if="formatted" class="output-copy">
+            <CopyButton :text="formatted" />
+          </div>
         </div>
       </div>
-    </NSpace>
+    </div>
   </div>
 </template>
+
+<style scoped>
+.tool-controls {
+  margin-bottom: var(--space-md);
+}
+
+.control-label {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+
+.split-panel {
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  gap: var(--space-md);
+  min-height: 0;
+}
+
+.panel-input,
+.panel-output {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  min-width: 0;
+}
+
+.panel-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-secondary);
+}
+
+.panel-divider {
+  background: var(--color-border);
+}
+
+.output-wrapper {
+  position: relative;
+}
+
+.output-copy {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+.mono-input :deep(textarea) {
+  font-family: var(--font-mono) !important;
+  font-size: 13px !important;
+}
+</style>

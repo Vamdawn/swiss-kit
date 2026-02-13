@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { NInput, NSpace, NAlert } from 'naive-ui'
+import { NInput, NAlert, NRadioGroup, NRadioButton } from 'naive-ui'
 import CopyButton from '@/components/CopyButton.vue'
+import ToolPageHeader from '@/components/ToolPageHeader.vue'
+import { base64Tool } from './index'
 import { encodeBase64, decodeBase64 } from './utils'
 
 const input = ref('')
@@ -20,46 +22,100 @@ const result = computed(() => {
 
 <template>
   <div>
-    <h2 style="font-family: var(--font-display); margin-bottom: var(--space-lg)">
-      Base64 编码/解码
-    </h2>
+    <ToolPageHeader
+      :title="base64Tool.title"
+      :description="base64Tool.description"
+      :icon="base64Tool.icon"
+      :gradient-var="base64Tool.gradientVar"
+    />
 
-    <NSpace vertical :size="16">
-      <NSpace>
-        <label>
-          <input v-model="mode" type="radio" value="encode" />
-          编码
-        </label>
-        <label>
-          <input v-model="mode" type="radio" value="decode" />
-          解码
-        </label>
-      </NSpace>
+    <div class="tool-controls">
+      <NRadioGroup v-model:value="mode" size="small">
+        <NRadioButton value="encode">编码</NRadioButton>
+        <NRadioButton value="decode">解码</NRadioButton>
+      </NRadioGroup>
+    </div>
 
-      <NInput
-        v-model:value="input"
-        type="textarea"
-        :placeholder="mode === 'encode' ? '输入要编码的文本...' : '输入 Base64 字符串...'"
-        :rows="6"
-        style="font-family: var(--font-mono)"
-      />
+    <NAlert v-if="result.error" type="error" :bordered="false" style="margin-bottom: 16px">
+      {{ result.error }}
+    </NAlert>
 
-      <NAlert v-if="result.error" type="error" :bordered="false">
-        {{ result.error }}
-      </NAlert>
-
-      <div v-if="result.value" style="position: relative">
+    <div class="split-panel">
+      <div class="panel-input">
+        <div class="panel-label">输入</div>
         <NInput
-          :value="result.value"
+          v-model:value="input"
           type="textarea"
-          readonly
-          :rows="6"
-          style="font-family: var(--font-mono)"
+          :placeholder="mode === 'encode' ? '输入要编码的文本...' : '输入 Base64 字符串...'"
+          :rows="14"
+          class="mono-input"
         />
-        <div style="position: absolute; top: 8px; right: 8px">
-          <CopyButton :text="result.value" />
+      </div>
+      <div class="panel-divider" />
+      <div class="panel-output">
+        <div class="panel-label">输出</div>
+        <div class="output-wrapper">
+          <NInput
+            :value="result.value"
+            type="textarea"
+            readonly
+            placeholder="结果将显示在这里"
+            :rows="14"
+            class="mono-input"
+          />
+          <div v-if="result.value" class="output-copy">
+            <CopyButton :text="result.value" />
+          </div>
         </div>
       </div>
-    </NSpace>
+    </div>
   </div>
 </template>
+
+<style scoped>
+.tool-controls {
+  margin-bottom: var(--space-md);
+}
+
+.split-panel {
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  gap: var(--space-md);
+  min-height: 0;
+}
+
+.panel-input,
+.panel-output {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  min-width: 0;
+}
+
+.panel-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-secondary);
+}
+
+.panel-divider {
+  background: var(--color-border);
+}
+
+.output-wrapper {
+  position: relative;
+}
+
+.output-copy {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+.mono-input :deep(textarea) {
+  font-family: var(--font-mono) !important;
+  font-size: 13px !important;
+}
+</style>
