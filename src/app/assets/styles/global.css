@@ -29,3 +29,14 @@ h3 {
   font-family: var(--font-display);
   font-weight: 400;
 }
+
+/* Applied temporarily during theme switches for smooth transitions */
+.theme-transitioning,
+.theme-transitioning *,
+.theme-transitioning *::before,
+.theme-transitioning *::after {
+  transition:
+    background-color var(--transition-normal),
+    color var(--transition-normal),
+    border-color var(--transition-normal) !important;
+}

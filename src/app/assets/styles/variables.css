@@ -38,10 +38,4 @@
   /* 过渡 */
   --transition-fast: 150ms ease;
   --transition-normal: 250ms ease;
-
-  /* 主题切换过渡 */
-  transition:
-    background-color var(--transition-normal),
-    color var(--transition-normal),
-    border-color var(--transition-normal);
 }

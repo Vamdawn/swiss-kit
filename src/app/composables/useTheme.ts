@@ -61,6 +61,7 @@ export function useTheme(): {
     const valid = themes.some((t) => t.key === key)
     if (!valid) return
 
+    document.documentElement.classList.add('theme-transitioning')
     currentTheme.value = key
     applyTheme(key)
 
@@ -69,6 +70,10 @@ export function useTheme(): {
     } catch {
       // localStorage may be unavailable
     }
+
+    setTimeout(() => {
+      document.documentElement.classList.remove('theme-transitioning')
+    }, 300)
   }
 
   const currentThemeMeta = computed<ThemeMeta>(() => {
