@@ -3,6 +3,7 @@ import { NLayout, NLayoutSider, NMenu, NLayoutContent } from 'naive-ui'
 import { computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { routes } from '@/router'
+import ThemeSwitcher from '@/components/ThemeSwitcher.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -25,9 +26,19 @@ function handleMenuUpdate(key: string) {
 
 <template>
   <NLayout has-sider style="height: 100vh">
-    <NLayoutSider bordered :width="220" content-style="padding: 16px;">
+    <NLayoutSider
+      bordered
+      :width="220"
+      content-style="padding: 16px; display: flex; flex-direction: column;"
+    >
       <div class="sidebar-brand">Swiss Kit</div>
-      <NMenu :options="menuOptions" :value="activeKey" @update:value="handleMenuUpdate" />
+      <NMenu
+        :options="menuOptions"
+        :value="activeKey"
+        style="flex: 1"
+        @update:value="handleMenuUpdate"
+      />
+      <ThemeSwitcher />
     </NLayoutSider>
     <NLayoutContent content-style="padding: 32px; background: var(--color-bg);">
       <RouterView />
