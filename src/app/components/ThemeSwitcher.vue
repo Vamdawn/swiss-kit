@@ -16,7 +16,7 @@ function selectTheme(key: string) {
 <template>
   <NPopover v-model:show="showPopover" trigger="click" placement="top" content-style="padding: 0">
     <template #trigger>
-      <button class="trigger-btn">
+      <button class="trigger-btn" type="button" aria-label="Switch theme">
         <svg
           class="trigger-icon"
           viewBox="0 0 24 24"
@@ -25,6 +25,7 @@ function selectTheme(key: string) {
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
+          aria-hidden="true"
         >
           <circle cx="13.5" cy="6.5" r="2.5" />
           <circle cx="19" cy="13" r="2.5" />
@@ -40,8 +41,10 @@ function selectTheme(key: string) {
       <button
         v-for="theme in themes"
         :key="theme.key"
+        type="button"
         class="theme-option"
         :class="{ active: currentTheme === theme.key }"
+        :aria-label="`Switch to ${theme.label} theme`"
         @click="selectTheme(theme.key)"
       >
         <span class="theme-dot" :style="{ backgroundColor: theme.accent }" />
@@ -99,7 +102,7 @@ function selectTheme(key: string) {
   display: flex;
   align-items: center;
   gap: var(--space-sm);
-  padding: var(--space-sm) var(--space-sm);
+  padding: var(--space-sm);
   border: 1px solid transparent;
   border-radius: var(--radius-sm);
   background: none;
