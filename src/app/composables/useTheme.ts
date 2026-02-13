@@ -4,15 +4,22 @@ export interface ThemeMeta {
   key: string
   label: string
   accent: string
+  accentHover: string
   isDark: boolean
 }
 
 export const themes: ThemeMeta[] = [
-  { key: 'default', label: '默认', accent: '#1a7a6d', isDark: false },
-  { key: 'ink-wash', label: '水墨', accent: '#4a7c6f', isDark: false },
-  { key: 'twilight', label: '薄暮', accent: '#c792ea', isDark: true },
-  { key: 'nord', label: 'Nord', accent: '#88c0d0', isDark: true },
-  { key: 'github-dark', label: 'GitHub Dark', accent: '#58a6ff', isDark: true },
+  { key: 'default', label: '默认', accent: '#1a7a6d', accentHover: '#15665b', isDark: false },
+  { key: 'ink-wash', label: '水墨', accent: '#4a7c6f', accentHover: '#3d6a5e', isDark: false },
+  { key: 'twilight', label: '薄暮', accent: '#c792ea', accentHover: '#d4a8f0', isDark: true },
+  { key: 'nord', label: 'Nord', accent: '#88c0d0', accentHover: '#8fbcbb', isDark: true },
+  {
+    key: 'github-dark',
+    label: 'GitHub Dark',
+    accent: '#58a6ff',
+    accentHover: '#79b8ff',
+    isDark: true,
+  },
 ]
 
 const STORAGE_KEY = 'swiss-kit-theme'
