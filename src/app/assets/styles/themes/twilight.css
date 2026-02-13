@@ -1,0 +1,14 @@
+/* themes/twilight.css - 薄暮主题 */
+[data-theme='twilight'] {
+  --color-bg: #1e1b2e;
+  --color-bg-card: #272340;
+  --color-bg-card-hover: #312d4e;
+  --color-border: #3a3557;
+  --color-text: #e4e0f0;
+  --color-text-secondary: #a9a3c0;
+  --color-accent: #c792ea;
+  --color-accent-hover: #d4a8f0;
+  --color-accent-light: rgba(199, 146, 234, 0.1);
+  --color-error: #f07178;
+  --color-success: #c3e88d;
+}

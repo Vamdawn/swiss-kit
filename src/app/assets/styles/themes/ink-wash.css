@@ -1,0 +1,14 @@
+/* themes/ink-wash.css - 水墨主题 */
+[data-theme='ink-wash'] {
+  --color-bg: #f0ede8;
+  --color-bg-card: #f7f5f0;
+  --color-bg-card-hover: #edeae3;
+  --color-border: #d4cfc7;
+  --color-text: #1a1a1a;
+  --color-text-secondary: #5c5c5c;
+  --color-accent: #4a7c6f;
+  --color-accent-hover: #3d6a5e;
+  --color-accent-light: rgba(74, 124, 111, 0.08);
+  --color-error: #c44d4d;
+  --color-success: #3a8a5c;
+}
