@@ -11,4 +11,10 @@
   --color-accent-light: rgba(136, 192, 208, 0.1);
   --color-error: #bf616a;
   --color-success: #a3be8c;
+
+  --tool-json-gradient: linear-gradient(135deg, #81a1c1, #5e81ac);
+  --tool-base64-gradient: linear-gradient(135deg, #b48ead, #a3789c);
+  --tool-url-gradient: linear-gradient(135deg, #88c0d0, #8fbcbb);
+  --tool-uuid-gradient: linear-gradient(135deg, #a3be8c, #8fbf7f);
+  --brand-gradient: linear-gradient(135deg, #88c0d0, #81a1c1);
 }

@@ -30,12 +30,23 @@
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 16px;
+  --radius-xl: 20px;
 
   /* 阴影 */
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.1);
 
   /* 过渡 */
   --transition-fast: 150ms ease;
   --transition-normal: 250ms ease;
+
+  /* 工具渐变色 — 默认主题：明亮活力 */
+  --tool-json-gradient: linear-gradient(135deg, #667eea, #764ba2);
+  --tool-base64-gradient: linear-gradient(135deg, #f093fb, #f5576c);
+  --tool-url-gradient: linear-gradient(135deg, #4facfe, #00f2fe);
+  --tool-uuid-gradient: linear-gradient(135deg, #43e97b, #38f9d7);
+
+  /* 品牌渐变 */
+  --brand-gradient: linear-gradient(135deg, var(--color-accent), #667eea);
 }

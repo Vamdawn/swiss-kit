@@ -6,4 +6,6 @@ export interface ToolMeta {
   description: string // 简短描述
   path: string // 路由路径，如 '/tools/json-formatter'
   component: Component
+  icon: string // SVG path data for the tool icon
+  gradientVar: string // CSS variable name, e.g. '--tool-json-gradient'
 }
