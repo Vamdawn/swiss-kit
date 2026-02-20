@@ -189,6 +189,32 @@ export function rgbToHsl({ r, g, b }: RGB): HSL {
   }
 }
 
+export function toHex({ r, g, b }: RGB): string {
+  const hex = (n: number) => n.toString(16).padStart(2, '0').toUpperCase()
+  return `#${hex(r)}${hex(g)}${hex(b)}`
+}
+
+export function toRgbString({ r, g, b }: RGB): string {
+  return `rgb(${r}, ${g}, ${b})`
+}
+
+export function toHslString(rgb: RGB): string {
+  const { h, s, l } = rgbToHsl(rgb)
+  return `hsl(${h}, ${s}%, ${l}%)`
+}
+
+export function findNamedColor({ r, g, b }: RGB): string | null {
+  for (const [name, [nr, ng, nb]] of Object.entries(CSS_NAMED_COLORS)) {
+    if (nr === r && ng === g && nb === b) return name
+  }
+  return null
+}
+
+export function getContrastColor({ r, g, b }: RGB): '#000000' | '#FFFFFF' {
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255
+  return luminance > 0.5 ? '#000000' : '#FFFFFF'
+}
+
 export function hslToRgb({ h, s, l }: HSL): RGB {
   const sn = s / 100
   const ln = l / 100
