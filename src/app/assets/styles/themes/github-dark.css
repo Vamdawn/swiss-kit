@@ -18,5 +18,6 @@
   --tool-uuid-gradient: linear-gradient(135deg, #3fb950, #56d364);
   --tool-json-yaml-gradient: linear-gradient(135deg, #f0883e, #db6d28);
   --tool-timestamp-gradient: linear-gradient(135deg, #79c0ff, #58a6ff);
+  --tool-color-gradient: linear-gradient(135deg, #f778ba, #a371f7);
   --brand-gradient: linear-gradient(135deg, #58a6ff, #a371f7);
 }

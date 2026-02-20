@@ -49,6 +49,8 @@
   --tool-json-yaml-gradient: linear-gradient(135deg, #f7971e, #ffd200);
   --tool-timestamp-gradient: linear-gradient(135deg, #667eea, #4facfe);
 
+  --tool-color-gradient: linear-gradient(135deg, #f093fb, #f5af19);
+
   /* 品牌渐变 */
   --brand-gradient: linear-gradient(135deg, var(--color-accent), #667eea);
 }
