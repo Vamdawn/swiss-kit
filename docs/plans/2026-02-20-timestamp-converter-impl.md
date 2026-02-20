@@ -14,11 +14,11 @@
 
 **Files:**
 
-- Modify: `src/app/assets/styles/variables.css:49` (after `--tool-json-yaml-gradient`)
-- Modify: `src/app/assets/styles/themes/ink-wash.css:19` (after `--tool-json-yaml-gradient`)
-- Modify: `src/app/assets/styles/themes/twilight.css:19` (after `--tool-json-yaml-gradient`)
-- Modify: `src/app/assets/styles/themes/nord.css:19` (after `--tool-json-yaml-gradient`)
-- Modify: `src/app/assets/styles/themes/github-dark.css:19` (after `--tool-json-yaml-gradient`)
+- Modify: `src/app/assets/styles/variables.css` (after `--tool-json-yaml-gradient`)
+- Modify: `src/app/assets/styles/themes/ink-wash.css` (after `--tool-json-yaml-gradient`)
+- Modify: `src/app/assets/styles/themes/twilight.css` (after `--tool-json-yaml-gradient`)
+- Modify: `src/app/assets/styles/themes/nord.css` (after `--tool-json-yaml-gradient`)
+- Modify: `src/app/assets/styles/themes/github-dark.css` (after `--tool-json-yaml-gradient`)
 
 **Step 1: Add gradient to default theme (variables.css)**
 
@@ -69,7 +69,7 @@ git commit -m "🎨 feat(timestamp): add tool gradient colors for all themes"
 
 ---
 
-### Task 2: Write utils.ts with tests (TDD)
+### Task 2: Write utils.ts with tests
 
 **Files:**
 
@@ -89,6 +89,7 @@ export interface ParsedInput {
 export function isMilliseconds(num: number): boolean {
   // Timestamps in seconds are 10 digits (up to 2286-11-20)
   // Timestamps in milliseconds are 13 digits
+  // Negative values are always treated as seconds (pre-epoch dates)
   return num > 9_999_999_999
 }
 
@@ -149,6 +150,7 @@ export function formatRelativeTime(ms: number, now?: number): string {
   const years = Math.floor(days / 365)
 
   let label: string
+  if (seconds < 5) return '刚刚'
   if (seconds < 60) label = `${seconds} 秒`
   else if (minutes < 60) label = `${minutes} 分钟`
   else if (hours < 24) label = `${hours} 小时`
@@ -170,6 +172,7 @@ import {
   parseInput,
   isMilliseconds,
   formatISO8601,
+  formatLocalTime,
   formatUTCTime,
   formatRFC2822,
   formatRelativeTime,
@@ -236,6 +239,12 @@ describe('timestamp converter utils', () => {
       const result = parseInput('0')
       expect(result).toEqual({ type: 'timestamp-s', ms: 0 })
     })
+
+    it('should treat large negative numbers as seconds', () => {
+      const result = parseInput('-10000000000')
+      expect(result).not.toBeNull()
+      expect(result!.type).toBe('timestamp-s')
+    })
   })
 
   describe('formatISO8601', () => {
@@ -245,6 +254,14 @@ describe('timestamp converter utils', () => {
 
     it('should handle epoch zero', () => {
       expect(formatISO8601(0)).toBe('1970-01-01T00:00:00.000Z')
+    })
+  })
+
+  describe('formatLocalTime', () => {
+    it('should format to local readable time', () => {
+      // Use a known UTC time; local output depends on test runner timezone
+      const result = formatLocalTime(1708416000000)
+      expect(result).toMatch(/^\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2}$/)
     })
   })
 
@@ -272,6 +289,10 @@ describe('timestamp converter utils', () => {
 
   describe('formatRelativeTime', () => {
     const base = 1708416000000 // 2024-02-20T08:00:00Z
+
+    it('should show 刚刚 for < 5s', () => {
+      expect(formatRelativeTime(base, base + 3_000)).toBe('刚刚')
+    })
 
     it('should show seconds for < 60s', () => {
       expect(formatRelativeTime(base, base + 30_000)).toBe('30 秒前')
@@ -346,7 +367,7 @@ export const timestampConverterTool: ToolMeta = {
 }
 ```
 
-> SVG icon: a clock face (circle + hour hand). Matches `viewBox="0 0 24 24"`, `stroke` style, same as other tools.
+> SVG icon: a clock face (circle + clock hands). Matches `viewBox="0 0 24 24"`, `stroke` style, same as other tools.
 
 **Step 2: Create TimestampConverterTool.vue**
 
@@ -388,13 +409,13 @@ const formats = computed(() => {
   if (!parsed.value) return []
   const ms = parsed.value.ms
   return [
-    { label: 'Unix (秒)', value: String(Math.floor(ms / 1000)) },
-    { label: 'Unix (毫秒)', value: String(ms) },
-    { label: 'ISO 8601', value: formatISO8601(ms) },
-    { label: '本地时间', value: formatLocalTime(ms) },
-    { label: 'UTC 时间', value: formatUTCTime(ms) },
-    { label: 'RFC 2822', value: formatRFC2822(ms) },
-    { label: '相对时间', value: formatRelativeTime(ms) },
+    { label: 'Unix (秒)', value: String(Math.floor(ms / 1000)), copyable: true },
+    { label: 'Unix (毫秒)', value: String(ms), copyable: true },
+    { label: 'ISO 8601', value: formatISO8601(ms), copyable: true },
+    { label: '本地时间', value: formatLocalTime(ms), copyable: true },
+    { label: 'UTC 时间', value: formatUTCTime(ms), copyable: true },
+    { label: 'RFC 2822', value: formatRFC2822(ms), copyable: true },
+    { label: '相对时间', value: formatRelativeTime(ms), copyable: false },
   ]
 })
 
@@ -441,7 +462,7 @@ function fillNow() {
       <div v-for="item in formats" :key="item.label" class="result-row">
         <span class="result-label">{{ item.label }}</span>
         <code class="result-value">{{ item.value }}</code>
-        <CopyButton v-if="item.label !== '相对时间'" :text="item.value" />
+        <CopyButton v-if="item.copyable" :text="item.value" />
       </div>
     </div>
   </div>
@@ -557,6 +578,6 @@ Verify:
 If fixes were needed, commit them:
 
 ```bash
-git add -A
+git add src/app/tools/timestamp-converter/ src/app/assets/styles/
 git commit -m "✨ feat: add timestamp converter tool"
 ```
