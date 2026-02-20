@@ -7,6 +7,7 @@ import {
   toHslString,
   findNamedColor,
   getContrastColor,
+  parseColorInput,
 } from '../utils'
 
 describe('color converter utils', () => {
@@ -123,6 +124,98 @@ describe('color converter utils', () => {
     })
     it('should return black for yellow', () => {
       expect(getContrastColor({ r: 255, g: 255, b: 0 })).toBe('#000000')
+    })
+  })
+
+  describe('parseColorInput', () => {
+    describe('HEX input', () => {
+      it('should parse 6-digit hex', () => {
+        expect(parseColorInput('#FF0000')).toEqual({ r: 255, g: 0, b: 0 })
+      })
+      it('should parse 6-digit hex lowercase', () => {
+        expect(parseColorInput('#ff6b6b')).toEqual({ r: 255, g: 107, b: 107 })
+      })
+      it('should parse 3-digit hex', () => {
+        expect(parseColorInput('#F00')).toEqual({ r: 255, g: 0, b: 0 })
+      })
+      it('should parse 3-digit hex lowercase', () => {
+        expect(parseColorInput('#abc')).toEqual({ r: 170, g: 187, b: 204 })
+      })
+      it('should parse 8-digit hex (ignore alpha)', () => {
+        expect(parseColorInput('#FF000080')).toEqual({ r: 255, g: 0, b: 0 })
+      })
+      it('should parse black', () => {
+        expect(parseColorInput('#000000')).toEqual({ r: 0, g: 0, b: 0 })
+      })
+      it('should parse white', () => {
+        expect(parseColorInput('#FFFFFF')).toEqual({ r: 255, g: 255, b: 255 })
+      })
+    })
+
+    describe('RGB input', () => {
+      it('should parse rgb() format', () => {
+        expect(parseColorInput('rgb(255, 0, 0)')).toEqual({ r: 255, g: 0, b: 0 })
+      })
+      it('should parse rgb() without spaces', () => {
+        expect(parseColorInput('rgb(255,107,107)')).toEqual({ r: 255, g: 107, b: 107 })
+      })
+      it('should parse rgba() format', () => {
+        expect(parseColorInput('rgba(255, 0, 0, 0.5)')).toEqual({ r: 255, g: 0, b: 0 })
+      })
+      it('should parse comma-separated numbers', () => {
+        expect(parseColorInput('255, 107, 107')).toEqual({ r: 255, g: 107, b: 107 })
+      })
+      it('should parse comma-separated numbers without spaces', () => {
+        expect(parseColorInput('255,0,0')).toEqual({ r: 255, g: 0, b: 0 })
+      })
+      it('should clamp values to 0-255', () => {
+        expect(parseColorInput('rgb(300, -10, 0)')).toEqual({ r: 255, g: 0, b: 0 })
+      })
+    })
+
+    describe('HSL input', () => {
+      it('should parse hsl() format', () => {
+        expect(parseColorInput('hsl(0, 100%, 50%)')).toEqual({ r: 255, g: 0, b: 0 })
+      })
+      it('should parse hsla() format', () => {
+        expect(parseColorInput('hsla(240, 100%, 50%, 0.5)')).toEqual({ r: 0, g: 0, b: 255 })
+      })
+      it('should parse hsl without percent signs', () => {
+        expect(parseColorInput('hsl(0, 100, 50)')).toEqual({ r: 255, g: 0, b: 0 })
+      })
+    })
+
+    describe('CSS Named Color input', () => {
+      it('should parse red', () => {
+        expect(parseColorInput('red')).toEqual({ r: 255, g: 0, b: 0 })
+      })
+      it('should parse tomato', () => {
+        expect(parseColorInput('tomato')).toEqual({ r: 255, g: 99, b: 71 })
+      })
+      it('should parse case-insensitively', () => {
+        expect(parseColorInput('SteelBlue')).toEqual({ r: 70, g: 130, b: 180 })
+      })
+      it('should parse with whitespace', () => {
+        expect(parseColorInput('  tomato  ')).toEqual({ r: 255, g: 99, b: 71 })
+      })
+    })
+
+    describe('invalid input', () => {
+      it('should return null for empty string', () => {
+        expect(parseColorInput('')).toBeNull()
+      })
+      it('should return null for whitespace only', () => {
+        expect(parseColorInput('   ')).toBeNull()
+      })
+      it('should return null for random text', () => {
+        expect(parseColorInput('hello')).toBeNull()
+      })
+      it('should return null for invalid hex', () => {
+        expect(parseColorInput('#ZZZZZZ')).toBeNull()
+      })
+      it('should return null for incomplete rgb', () => {
+        expect(parseColorInput('rgb(255, 0)')).toBeNull()
+      })
     })
   })
 })

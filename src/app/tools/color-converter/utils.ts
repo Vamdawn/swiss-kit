@@ -215,6 +215,80 @@ export function getContrastColor({ r, g, b }: RGB): '#000000' | '#FFFFFF' {
   return luminance > 0.5 ? '#000000' : '#FFFFFF'
 }
 
+function clamp(value: number, min: number, max: number): number {
+  return Math.min(max, Math.max(min, value))
+}
+
+function parseHex(input: string): RGB | null {
+  const match = input.match(/^#([0-9a-f]{3}|[0-9a-f]{6}|[0-9a-f]{8})$/i)
+  if (!match) return null
+  const hex = match[1]
+
+  if (hex.length === 3) {
+    return {
+      r: parseInt(hex[0] + hex[0], 16),
+      g: parseInt(hex[1] + hex[1], 16),
+      b: parseInt(hex[2] + hex[2], 16),
+    }
+  }
+  // hex.length is 6 or 8 (regex guarantees 3, 6, or 8)
+  return {
+    r: parseInt(hex.slice(0, 2), 16),
+    g: parseInt(hex.slice(2, 4), 16),
+    b: parseInt(hex.slice(4, 6), 16),
+  }
+}
+
+function parseRgb(input: string): RGB | null {
+  const funcMatch = input.match(/^rgba?\(\s*(-?\d+)\s*,\s*(-?\d+)\s*,\s*(-?\d+)/)
+  if (funcMatch) {
+    return {
+      r: clamp(parseInt(funcMatch[1]), 0, 255),
+      g: clamp(parseInt(funcMatch[2]), 0, 255),
+      b: clamp(parseInt(funcMatch[3]), 0, 255),
+    }
+  }
+
+  const bareMatch = input.match(/^(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})$/)
+  if (bareMatch) {
+    return {
+      r: clamp(parseInt(bareMatch[1]), 0, 255),
+      g: clamp(parseInt(bareMatch[2]), 0, 255),
+      b: clamp(parseInt(bareMatch[3]), 0, 255),
+    }
+  }
+
+  return null
+}
+
+function parseHsl(input: string): RGB | null {
+  // Note: only matches integer values; CSS allows decimals and negative hue — acceptable for M1
+  const match = input.match(/^hsla?\(\s*(\d+)\s*,\s*(\d+)%?\s*,\s*(\d+)%?/)
+  if (!match) return null
+  return hslToRgb({
+    h: parseInt(match[1]),
+    s: parseInt(match[2]),
+    l: parseInt(match[3]),
+  })
+}
+
+function parseNamedColor(input: string): RGB | null {
+  const color = CSS_NAMED_COLORS[input.toLowerCase()]
+  if (!color) return null
+  return { r: color[0], g: color[1], b: color[2] }
+}
+
+export function parseColorInput(input: string): RGB | null {
+  const trimmed = input.trim()
+  if (!trimmed) return null
+
+  if (trimmed.startsWith('#')) return parseHex(trimmed)
+  if (/^rgba?\(/i.test(trimmed)) return parseRgb(trimmed)
+  if (/^hsla?\(/i.test(trimmed)) return parseHsl(trimmed)
+  if (/^\d{1,3}\s*,/.test(trimmed)) return parseRgb(trimmed)
+  return parseNamedColor(trimmed)
+}
+
 export function hslToRgb({ h, s, l }: HSL): RGB {
   const sn = s / 100
   const ln = l / 100
