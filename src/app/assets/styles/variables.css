@@ -46,6 +46,7 @@
   --tool-base64-gradient: linear-gradient(135deg, #f093fb, #f5576c);
   --tool-url-gradient: linear-gradient(135deg, #4facfe, #00f2fe);
   --tool-uuid-gradient: linear-gradient(135deg, #43e97b, #38f9d7);
+  --tool-json-yaml-gradient: linear-gradient(135deg, #f7971e, #ffd200);
 
   /* 品牌渐变 */
   --brand-gradient: linear-gradient(135deg, var(--color-accent), #667eea);

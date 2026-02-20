@@ -16,5 +16,6 @@
   --tool-base64-gradient: linear-gradient(135deg, #b48ead, #a3789c);
   --tool-url-gradient: linear-gradient(135deg, #88c0d0, #8fbcbb);
   --tool-uuid-gradient: linear-gradient(135deg, #a3be8c, #8fbf7f);
+  --tool-json-yaml-gradient: linear-gradient(135deg, #ebcb8b, #d08770);
   --brand-gradient: linear-gradient(135deg, #88c0d0, #81a1c1);
 }
