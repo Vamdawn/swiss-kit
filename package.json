@@ -1,6 +1,6 @@
 {
   "name": "@vamdawn/swiss-kit",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "A collection of handy browser-based utilities",
   "type": "module",
   "license": "MIT",
