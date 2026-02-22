@@ -7,19 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      js-yaml:
-        specifier: ^4.1.1
-        version: 4.1.1
-      naive-ui:
-        specifier: ^2.43.2
-        version: 2.43.2(vue@3.5.28(typescript@5.9.3))
-      vue:
-        specifier: ^3.5.28
-        version: 3.5.28(typescript@5.9.3)
-      vue-router:
-        specifier: ^5.0.2
-        version: 5.0.2(@vue/compiler-sfc@3.5.28)(vue@3.5.28(typescript@5.9.3))
     devDependencies:
       '@eslint/js':
         specifier: ^9.39.2
@@ -48,9 +35,15 @@ importers:
       happy-dom:
         specifier: ^20.6.1
         version: 20.6.1
+      js-yaml:
+        specifier: ^4.1.1
+        version: 4.1.1
       lint-staged:
         specifier: ^16.2.7
         version: 16.2.7
+      naive-ui:
+        specifier: ^2.43.2
+        version: 2.43.2(vue@3.5.28(typescript@5.9.3))
       open:
         specifier: ^11.0.0
         version: 11.0.0
@@ -78,6 +71,12 @@ importers:
       vitest:
         specifier: ^4.0.18
         version: 4.0.18(@types/node@25.2.3)(happy-dom@20.6.1)(yaml@2.8.2)
+      vue:
+        specifier: ^3.5.28
+        version: 3.5.28(typescript@5.9.3)
+      vue-router:
+        specifier: ^5.0.2
+        version: 5.0.2(@vue/compiler-sfc@3.5.28)(vue@3.5.28(typescript@5.9.3))
       vue-tsc:
         specifier: ^3.2.4
         version: 3.2.4(typescript@5.9.3)
